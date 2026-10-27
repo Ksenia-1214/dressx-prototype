@@ -1350,14 +1350,31 @@
       border-right-color: #c4a574; border-bottom-color: #c4a574;
     }
     .adj-roles-banner {
-      display: none; align-items: flex-start; gap: 8px;
+      display: none; align-items: center; gap: 8px;
       margin: 0 0 12px; padding: 10px 12px; border-radius: 10px;
       background: #fff4e8; border: 1px solid #f6d3ae;
       font-size: 12px; color: #7a4a16; line-height: 1.4;
     }
     .adj-roles-banner.show { display: flex; }
-    .adj-roles-banner strong { display: block; color: #a85a14; font-weight: 600; margin-bottom: 2px; }
-    .adj-roles-banner svg { flex-shrink: 0; margin-top: 1px; color: #ef8a2f; }
+    .adj-roles-banner strong { color: #a85a14; font-weight: 600; }
+    .adj-roles-info {
+      position: relative; width: 16px; height: 16px; padding: 0; border-radius: 50%;
+      border: 1px solid #e0b888; background: transparent; color: #a85a14;
+      font: inherit; font-size: 10px; font-weight: 700; font-style: italic;
+      display: grid; place-items: center; cursor: help; flex-shrink: 0;
+    }
+    .adj-roles-info:hover, .adj-roles-info:focus-visible {
+      border-color: #a85a14; background: #fff; outline: none;
+    }
+    .adj-roles-tip {
+      display: none; position: absolute; left: 0; top: calc(100% + 8px); z-index: 6;
+      width: max-content; max-width: 240px; padding: 8px 10px; border-radius: 8px;
+      background: #fff; color: var(--text); font-size: 12px; font-weight: 500; font-style: normal;
+      line-height: 1.35; text-align: left; white-space: normal;
+      box-shadow: 0 8px 24px rgba(0,0,0,.16); pointer-events: none;
+    }
+    .adj-roles-info:hover .adj-roles-tip,
+    .adj-roles-info:focus-visible .adj-roles-tip { display: block; }
     .adj-add {
       aspect-ratio: 1.15; border: 1.5px dashed var(--border-strong); border-radius: 12px;
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
@@ -2122,13 +2139,13 @@
             <h4>Product photos</h4>
             <span class="adj-slot-pill" id="adjSlotPill">0 / 4</span>
           </div>
-          <p class="hint" id="adjPhotoHint">Main is required. Back and Secondary are optional. Roles + reference share a limit of 4.</p>
+          <p class="hint" id="adjPhotoHint">Main is required. Back and Secondary are optional.</p>
           <div class="adj-roles-banner" id="adjRolesBanner" role="status">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-            <div>
-              <strong>Assign photo roles</strong>
-              Choose Main for one photo — Back and Secondary are optional.
-            </div>
+            <strong>Assign photo roles</strong>
+            <button type="button" class="adj-roles-info" aria-label="Choose a Main photo. Back and Secondary are optional.">
+              i
+              <span class="adj-roles-tip" role="tooltip">Choose a Main photo. Back and Secondary are optional.</span>
+            </button>
           </div>
           <div class="adj-role-tools" id="adjRoleTools" hidden>
             <button type="button" class="adj-quick" id="adjClearRoles">Clear roles</button>
@@ -2222,8 +2239,8 @@
 
   <script>
     const CATEGORIES = [
-      "unassigned", "Tops", "Bottoms", "Top Overlay", "Bags", "Shoes",
-      "Belts", "Scarves", "Rings", "Bracelets", "Necklace", "Earrings"
+      "unassigned", "Tops", "Dresses", "Outerwear", "Bottoms", "Bags", "Shoes",
+      "Belts", "Scarves", "Rings", "Bracelets", "Necklaces", "Earrings"
     ];
     const CATEGORY_LABEL = { unassigned: "UNASSIGNED ITEMS" };
     CATEGORIES.forEach((c) => { if (c !== "unassigned") CATEGORY_LABEL[c] = c; });
@@ -3048,18 +3065,18 @@
     function closeModal(id) { $(id).classList.remove("show"); }
 
     /* —— Adjust / Product Measurements —— */
-    const ADJ_CATS = ["Tops", "Dresses", "Jackets", "Bottom", "Shoes", "Bags", "Jewelry", "Sunglasses", "Hats", "Belts", "Scarves"];
+    const ADJ_CATS = ["Tops", "Dresses", "Outerwear", "Bottoms", "Shoes", "Bags", "Jewelry", "Sunglasses", "Hats", "Belts", "Scarves"];
     const ADJ_FROM_PROTO = {
-      Tops: "Tops", Bottoms: "Bottom", "Top Overlay": "Jackets", Bags: "Bags", Shoes: "Shoes",
-      Belts: "Belts", Scarves: "Scarves", Rings: "Jewelry", Bracelets: "Jewelry", Necklace: "Jewelry", Earrings: "Jewelry",
+      Tops: "Tops", Dresses: "Dresses", Outerwear: "Outerwear", Bottoms: "Bottoms", Bags: "Bags", Shoes: "Shoes",
+      Belts: "Belts", Scarves: "Scarves", Rings: "Jewelry", Bracelets: "Jewelry", Necklaces: "Jewelry", Earrings: "Jewelry",
     };
     const ADJ_TO_PROTO = {
-      Tops: "Tops", Bottom: "Bottoms", Jackets: "Top Overlay", Bags: "Bags", Shoes: "Shoes",
+      Tops: "Tops", Dresses: "Dresses", Outerwear: "Outerwear", Bottoms: "Bottoms", Bags: "Bags", Shoes: "Shoes",
       Belts: "Belts", Scarves: "Scarves",
     };
     const ADJ_JEWELRY = ["Earrings", "Necklaces", "Rings", "Bracelets"];
-    const ADJ_JEWELRY_FROM = { Rings: "Rings", Bracelets: "Bracelets", Necklace: "Necklaces", Earrings: "Earrings" };
-    const ADJ_JEWELRY_TO = { Rings: "Rings", Bracelets: "Bracelets", Necklaces: "Necklace", Earrings: "Earrings" };
+    const ADJ_JEWELRY_FROM = { Rings: "Rings", Bracelets: "Bracelets", Necklaces: "Necklaces", Earrings: "Earrings" };
+    const ADJ_JEWELRY_TO = { Rings: "Rings", Bracelets: "Bracelets", Necklaces: "Necklaces", Earrings: "Earrings" };
     const ADJ_OPTS = {
       fit: ["Skinny", "Slim", "Straight", "Relaxed", "Loose", "Oversized"],
       tuck: ["Tucked in", "Untucked", "Half tucked"],
@@ -3067,15 +3084,15 @@
       sleeve: ["Long sleeves", "Short sleeves", "Sleeveless", "Rolled up"],
       carry: ["Hand", "Shoulder", "Crossbody"],
       wearing: ["At waist", "On hips", "Over garment"],
-      layer: ["Top", "Jacket", "Dress"],
+      layer: ["Tops", "Jackets", "Dresses"],
     };
     const dim = (key, label) => ({ type: "num", key, label });
     const sel = (key, label, opts, extra = {}) => ({ type: "sel", key, label, opts, ...extra });
     const ADJ_FIELDS = {
       Tops: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit"), sel("tuck", "Tuck Style", "tuck"), sel("closure", "Closure State", "closure"), sel("sleeve", "Sleeve Style", "sleeve")],
       Dresses: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit"), sel("sleeve", "Sleeve Style", "sleeve")],
-      Jackets: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit"), sel("closure", "Closure State", "closure"), sel("sleeve", "Sleeve Style", "sleeve")],
-      Bottom: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit", { full: true })],
+      Outerwear: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit"), sel("closure", "Closure State", "closure"), sel("sleeve", "Sleeve Style", "sleeve")],
+      Bottoms: [dim("width", "Width"), dim("height", "Height"), sel("fit", "Fit", "fit", { full: true })],
       Shoes: [{ type: "num", key: "heel", label: "Heel height", half: true }],
       Bags: [dim("length", "Length"), dim("height", "Height"), dim("depth", "Width (Depth)"), sel("carry", "Carrying Style", "carry", { full: true, placeholder: "Select carrying style" })],
       Jewelry: [dim("width", "Width"), dim("height", "Height")],
@@ -3315,9 +3332,11 @@
       if (pill) pill.textContent = `${adjSlotUsed()} / ${ADJ_MAX_SLOTS}`;
       const hint = $("adjPhotoHint");
       if (hint) {
+        // A single photo is saved as Main automatically, so the roles copy is noise.
+        hint.hidden = !multi;
         hint.textContent = adjHasRef()
           ? "Reference is set — assign roles to at most 3 photos (Main required). Extra photos stay as No role."
-          : "Main is required. Back and Secondary are optional. Roles + reference share a limit of 4.";
+          : "Main is required. Back and Secondary are optional.";
       }
       const banner = $("adjRolesBanner");
       if (banner) banner.classList.toggle("show", rolesNeeded);
@@ -3611,7 +3630,8 @@
           x.photos = adj.photos.length;
           if (x.category !== "unassigned") {
             const target = adj.cat === "Jewelry" ? ADJ_JEWELRY_TO[adj.jewelry] : ADJ_TO_PROTO[adj.cat];
-            if (target) x.category = target;
+            const sameFamily = adj.cat !== "Jewelry" && ADJ_FROM_PROTO[x.category] === adj.cat;
+            if (target && !sameFamily) x.category = target;
           }
         });
         closeModal("adjustModal");
