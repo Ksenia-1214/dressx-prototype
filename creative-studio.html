@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DRESSX — Creative Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f4f5;
+      --surface: #ffffff;
+      --sidebar: #f7f7f8;
+      --text: #14141a;
+      --muted: #6b6b76;
+      --muted-2: #9a9aa3;
+      --border: #e6e6ea;
+      --border-strong: #d0d0d6;
+      --primary: #1a1a22;
+      --ok: #16a34a;
+      --ok-bg: #ecfdf3;
+      --bad: #e11d48;
+      --bad-bg: #fff1f2;
+      --shadow-modal: 0 24px 64px rgba(20, 20, 26, 0.18);
+      --font: "Geist", "Segoe UI", system-ui, sans-serif;
+      --sidebar-w: 268px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input { font-family: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+    button:disabled { cursor: not-allowed; opacity: 0.4; }
+    [hidden] { display: none !important; }
+    a { color: inherit; text-decoration: none; }
+
+    /* —— Sidebar —— */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 22px 16px 18px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 8px 22px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-mark svg { width: 20px; height: 20px; opacity: .9; }
+    .collapse-btn {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      color: var(--muted);
+      display: grid; place-items: center;
+    }
+    .collapse-btn:hover { background: #ececee; color: var(--text); }
+    .collapse-btn svg { width: 16px; height: 16px; }
+
+    .proj-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .proj-add {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      color: var(--muted);
+      display: grid; place-items: center;
+    }
+    .proj-add:hover { background: #ececee; color: var(--text); }
+    .proj-add svg { width: 16px; height: 16px; }
+
+    .proj-list {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-bottom: 16px;
+    }
+    .proj-item {
+      display: block;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      line-height: 1.35;
+      color: var(--text);
+      text-align: left;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background .12s ease;
+    }
+    .proj-item:hover { background: #ececee; }
+    .proj-item.active {
+      background: #e4e4ea;
+      font-weight: 600;
+      box-shadow: inset 0 0 0 1px rgba(20, 20, 26, 0.04);
+    }
+
+    .nav-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      line-height: 1.35;
+      color: var(--muted);
+      text-align: left;
+      width: 100%;
+      transition: background .12s ease, color .12s ease;
+    }
+    .nav-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .nav-link:hover { background: #ececee; color: var(--text); }
+
+    /* —— App —— */
+    .app {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .crumbs {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .crumbs .sep { margin: 0 8px; opacity: .4; }
+    .crumbs strong { color: var(--text); font-weight: 500; }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .user-block {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 10px;
+      border-right: 1px solid var(--border);
+    }
+    .ws-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
+    .badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #eef0f4;
+      color: var(--muted);
+    }
+    .user-email { color: var(--text); font-weight: 500; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .dot.green { background: #22c55e; }
+    .dot.purple { background: #a855f7; }
+    .dot.amber { background: #f59e0b; }
+    .icon-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: grid; place-items: center;
+      color: var(--muted);
+      position: relative;
+    }
+    .icon-btn:hover { background: #f4f4f5; color: var(--text); }
+    .icon-btn .badge-n {
+      position: absolute;
+      top: 2px; right: 0;
+      font-size: 9px;
+      font-weight: 700;
+      background: #ef4444;
+      color: #fff;
+      border-radius: 8px;
+      padding: 1px 4px;
+      line-height: 1.2;
+    }
+
+    .main {
+      flex: 1;
+      overflow: auto;
+      padding: 36px 40px 48px;
+    }
+    .main-inner {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .page-head { margin-bottom: 28px; }
+    .page-head h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+    .page-head p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* —— Workflow cards —— */
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 720px;
+    }
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .workflow-grid { grid-template-columns: 1fr; max-width: 400px; }
+      .main { padding: 24px 20px 40px; }
+      .top-right .stat, .user-email { display: none; }
+      .user-block { border: none; padding: 0; }
+    }
+
+    .wf-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      text-align: left;
+      width: 100%;
+      transition: border-color .15s, box-shadow .15s, transform .15s;
+      display: flex;
+      flex-direction: column;
+    }
+    .wf-card:hover {
+      border-color: #c8c8d0;
+      box-shadow: 0 8px 28px rgba(20,20,26,.08);
+      transform: translateY(-1px);
+    }
+    .wf-card:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .wf-visual {
+      height: 280px;
+      background: #e8e8ec;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      overflow: hidden;
+    }
+    .wf-half {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wf-half.top { background: #ececef; }
+    .wf-half.bottom { background: #e2e2e6; border-top: 1px solid rgba(0,0,0,.04); }
+
+    .ill-flat {
+      width: 42%;
+      aspect-ratio: 1.05;
+      background: #1a1a1a;
+      border-radius: 4px;
+      position: relative;
+      box-shadow: 0 6px 16px rgba(0,0,0,.1);
+    }
+    .ill-flat::before {
+      content: "";
+      position: absolute;
+      inset: 16% 26% 42%;
+      border: 1.5px solid rgba(255,255,255,.2);
+      border-radius: 3px 3px 50% 50%;
+      border-bottom: none;
+    }
+
+    .ill-model {
+      height: 88%;
+      width: 34%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .ill-model .head {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #c4a484;
+      margin-bottom: 3px;
+      flex-shrink: 0;
+    }
+    .ill-model .torso {
+      width: 44px;
+      flex: 1;
+      background: #1a1a1a;
+      border-radius: 6px 6px 3px 3px;
+      min-height: 28px;
+    }
+    .ill-model .legs {
+      width: 40px;
+      height: 38%;
+      background: #2f2f36;
+      border-radius: 3px 3px 6px 6px;
+      margin-top: 2px;
+    }
+    .ill-model.side .torso { width: 36px; }
+    .ill-model.side .legs { width: 32px; background: #1a1a1a; }
+
+    .wf-body { padding: 18px 20px 20px; }
+    .wf-body h2 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .wf-body p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* —— Upload view —— */
+    .project-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .project-chip .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef0f4;
+      color: var(--muted);
+    }
+    .upload-zone {
+      margin-top: 24px;
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 16px;
+      padding: 52px 28px;
+      text-align: center;
+      background: #fcfcfd;
+      transition: border-color .15s, background .15s;
+      cursor: pointer;
+    }
+    .upload-zone:hover, .upload-zone.drag {
+      border-color: var(--text);
+      background: #fff;
+    }
+    .upload-icon {
+      width: 52px; height: 52px;
+      margin: 0 auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      display: grid; place-items: center;
+      color: #3f3f46;
+    }
+    .upload-zone h3 { margin: 14px 0 6px; font-size: 16px; font-weight: 600; }
+    .upload-zone p {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 400px;
+      margin: 0 auto 16px;
+      line-height: 1.45;
+    }
+    .link-cta {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .uploaded-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .uploaded-tile {
+      aspect-ratio: 1;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f4f4f5;
+      overflow: hidden;
+      position: relative;
+    }
+    .uploaded-tile img { width: 100%; height: 100%; object-fit: cover; }
+    .uploaded-tile .name {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 8px;
+      font-size: 11px;
+      background: linear-gradient(transparent, rgba(0,0,0,.55));
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .foot-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0 0;
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      color: var(--text);
+      transition: background .15s, border-color .15s;
+    }
+    .btn:hover:not(:disabled) { background: #f7f7f8; }
+    .btn-dark {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .btn-dark:hover:not(:disabled) { background: #2a2a34; }
+
+    /* —— Modals —— */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20,20,26,.48);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .overlay.show { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      width: min(440px, 100%);
+      max-height: min(92vh, 860px);
+      overflow: auto;
+      box-shadow: var(--shadow-modal);
+      animation: modalIn .2s ease-out;
+    }
+    .modal.lg { width: min(820px, 100%); }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(8px) scale(.98); }
+      to { opacity: 1; transform: none; }
+    }
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px 22px 0;
+    }
+    .modal-head h3 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .modal-lead {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+    .modal-close {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: grid; place-items: center;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .modal-close:hover { background: #f4f4f5; color: var(--text); }
+    .modal-body { padding: 18px 22px 8px; }
+    .modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 22px 22px;
+    }
+    .modal-footer.spread { justify-content: space-between; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .field input {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+    }
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26,26,34,.08);
+    }
+    .field-hint {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted-2);
+    }
+
+    /* Photo guide */
+    .guide-section { margin-bottom: 20px; }
+    .guide-label {
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .guide-label.ok { background: var(--ok-bg); color: var(--ok); }
+    .guide-label.bad { background: var(--bad-bg); color: var(--bad); }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 700px) {
+      .guide-grid { grid-template-columns: 1fr; }
+      .guide-tips { grid-template-columns: 1fr 1fr; }
+    }
+    .guide-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .guide-thumb {
+      height: 100px;
+      background: #eeeef1;
+      position: relative;
+      overflow: hidden;
+    }
+    .guide-card-body { padding: 12px; }
+    .guide-card-body h4 {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .guide-card-body p { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .mark {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .mark.ok { background: var(--ok); }
+    .mark.bad { background: var(--bad); }
+
+    .g-flat { background: linear-gradient(#f0f0f2, #e4e4e8); }
+    .g-flat::after {
+      content: "";
+      position: absolute;
+      left: 28%; right: 28%; top: 22%; bottom: 28%;
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .g-hanger { background: linear-gradient(#e9e9ee, #dddde3); }
+    .g-hanger::before {
+      content: "";
+      position: absolute;
+      left: 50%; top: 14%;
+      width: 36px; height: 10px;
+      border: 2px solid #8b6914;
+      border-bottom: none;
+      border-radius: 18px 18px 0 0;
+      transform: translateX(-50%);
+    }
+    .g-hanger::after {
+      content: "";
+      position: absolute;
+      left: 22%; right: 22%; top: 28%; bottom: 18%;
+      background: #1e3a5f;
+      border-radius: 4px 4px 8px 8px;
+      clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+    }
+    .g-mannequin { background: linear-gradient(#e6e6ea, #d8d8de); }
+    .g-mannequin::before {
+      content: "";
+      position: absolute;
+      left: 32%; right: 32%; top: 18%; bottom: 12%;
+      background: #8b5a3c;
+      border-radius: 40% 40% 12px 12px;
+    }
+    .g-folded {
+      background: repeating-linear-gradient(135deg, #f9a8d4 0 12px, #f472b6 12px 24px);
+    }
+    .g-folded::after {
+      content: "";
+      position: absolute;
+      inset: 22% 18%;
+      background: #fce7f3;
+      border-radius: 8px;
+      box-shadow: 0 4px 0 #f9a8d4, 0 8px 0 #f472b6;
+    }
+    .g-two { background: linear-gradient(#ebebef, #e0e0e6); }
+    .g-two::before, .g-two::after {
+      content: "";
+      position: absolute;
+      top: 20%; bottom: 16%;
+      width: 28%;
+      border-radius: 4px;
+    }
+    .g-two::before { left: 16%; background: #f5f5f5; border: 1px solid #ccc; }
+    .g-two::after { right: 16%; background: #2563eb; }
+    .g-busy {
+      background:
+        radial-gradient(circle at 20% 80%, #f59e0b55 0 20%, transparent 21%),
+        radial-gradient(circle at 80% 30%, #ef444455 0 18%, transparent 19%),
+        linear-gradient(160deg, #44403c, #1c1917);
+    }
+    .g-busy::after {
+      content: "";
+      position: absolute;
+      left: 30%; right: 30%; top: 18%; bottom: 20%;
+      background: #b91c1c;
+      border-radius: 6px;
+      opacity: .85;
+    }
+
+    .guide-tips {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      background: #f4f4f6;
+      border-radius: 12px;
+      padding: 14px 12px;
+    }
+    .tip {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 4px 8px;
+      min-width: 0;
+    }
+    .tip-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+    }
+    .tip strong { font-size: 12px; font-weight: 600; }
+    .tip span { font-size: 11px; color: var(--muted); line-height: 1.35; }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      z-index: 80;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: .25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.8H21l-5.5 4 2.1 6.7L12 15.8 6.4 19.5l2.1-6.7L3 8.8h6.8L12 2z"/></svg>
+        DRESSX
+      </div>
+      <button class="collapse-btn" type="button" aria-label="Collapse sidebar" data-toast="Sidebar collapse stub">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
+      </button>
+    </div>
+
+    <div class="proj-head">
+      <span>PROJECTS</span>
+      <button class="proj-add" type="button" id="btnNewProject" aria-label="New project" title="New project">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+    <div class="proj-list" id="projList">
+      <button class="proj-item active" type="button" data-toast="Current: new project">Untitled Photoshoot 26…</button>
+      <button class="proj-item" type="button" data-toast="Would open Sporty &amp; Rich">Sporty &amp; Rich</button>
+      <button class="proj-item" type="button" data-toast="Would open Swarovski">Swarovski</button>
+      <button class="proj-item" type="button" data-toast="Would open Zalando">Zalando</button>
+      <button class="proj-item" type="button" data-toast="Would open Nordstorm">Nordstorm</button>
+      <button class="proj-item" type="button" data-toast="Would open Green Project">Green Project</button>
+    </div>
+
+    <div class="nav-bottom">
+      <button class="nav-link" type="button" data-toast="Settings stub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+        Settings
+      </button>
+      <button class="nav-link" type="button" data-toast="Help stub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 114 2c-.9.6-1.5 1.1-1.5 2.2M12 17h.01"/></svg>
+        Help and Tutorials
+      </button>
+      <button class="nav-link" type="button" data-toast="Log out stub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 4h4a1 1 0 011 1v14a1 1 0 01-1 1h-4M10 16l-4-4 4-4M6 12h10"/></svg>
+        Log out
+      </button>
+    </div>
+  </aside>
+
+  <div class="app">
+    <header class="topbar">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <span>DRESSX</span>
+        <span class="sep">/</span>
+        <span>New Collection</span>
+        <span class="sep">/</span>
+        <strong id="crumbTail">Creative Studio</strong>
+      </nav>
+      <div class="top-right">
+        <div class="user-block">
+          <span class="ws-dot" aria-hidden="true"></span>
+          <span>DRESSX</span>
+          <span class="badge">STYLIST</span>
+          <span class="user-email">ksenia.chernous@dressx.com</span>
+        </div>
+        <button class="icon-btn" type="button" title="Support" aria-label="Support">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 14v-2a8 8 0 0116 0v2"/><path d="M4 14a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zM20 14a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z"/><path d="M9 19a3 3 0 006 0"/></svg>
+        </button>
+        <div class="stat"><span class="dot amber"></span>9,787 Credits</div>
+        <div class="stat"><span class="dot green"></span>318 Video Generations</div>
+        <div class="stat"><span class="dot purple"></span>3,859 Photo Generations</div>
+        <button class="icon-btn" type="button" title="Notifications" aria-label="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 9a6 6 0 0112 0c0 7 3 7 3 7H3s3 0 3-7"/><path d="M10 19a2 2 0 004 0"/></svg>
+          <span class="badge-n">9+</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Workflow pick — click card starts naming -->
+      <div class="main-inner" id="viewWorkflow">
+        <div class="page-head">
+          <h1>Creative Studio</h1>
+          <p>Start a new project by choosing a creative workflow.</p>
+        </div>
+
+        <div class="workflow-grid">
+          <button class="wf-card" type="button" data-workflow="flatlay">
+            <div class="wf-visual" aria-hidden="true">
+              <div class="wf-half top"><div class="ill-flat"></div></div>
+              <div class="wf-half bottom">
+                <div class="ill-model">
+                  <div class="head"></div>
+                  <div class="torso"></div>
+                  <div class="legs"></div>
+                </div>
+              </div>
+            </div>
+            <div class="wf-body">
+              <h2>Flat-Lay to Photoshoot</h2>
+              <p>Transform your product flat-lay shots into on-model visuals.</p>
+            </div>
+          </button>
+
+          <button class="wf-card" type="button" data-workflow="video">
+            <div class="wf-visual" aria-hidden="true">
+              <div class="wf-half top">
+                <div class="ill-model">
+                  <div class="head"></div>
+                  <div class="torso"></div>
+                  <div class="legs"></div>
+                </div>
+              </div>
+              <div class="wf-half bottom">
+                <div class="ill-model side">
+                  <div class="head"></div>
+                  <div class="torso"></div>
+                  <div class="legs"></div>
+                </div>
+              </div>
+            </div>
+            <div class="wf-body">
+              <h2>Photoshoot to Video</h2>
+              <p>Turn your professional photoshoots into high-quality videos.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Upload after guide -->
+      <div class="main-inner" id="viewUpload" hidden>
+        <div class="project-chip">
+          <span class="tag" id="uploadWorkflowTag">Flat-Lay to Photoshoot</span>
+          <span id="uploadProjectLabel">Untitled Photoshoot</span>
+        </div>
+        <div class="page-head">
+          <h1 id="upTitle">Upload products</h1>
+          <p id="upDesc">Add garment photos to generate your on-model photoshoot.</p>
+        </div>
+
+        <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload product images">
+          <div class="upload-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V4m0 0l-4 4m4-4l4 4"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          </div>
+          <h3 id="uploadZoneTitle">Upload product images</h3>
+          <p id="uploadZoneDesc">JPG, PNG or WebP. One garment per photo, fully in frame.</p>
+          <button class="link-cta" id="browseFiles" type="button">Browse files →</button>
+        </div>
+        <div class="uploaded-grid" id="uploadedGrid" hidden></div>
+
+        <div class="foot-bar">
+          <button class="btn" type="button" id="btnBackWorkflow">← Change workflow</button>
+          <button class="btn btn-dark" id="btnGenerate" type="button" disabled>Continue →</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Name project -->
+  <div class="overlay" id="nameModal" role="dialog" aria-modal="true" aria-labelledby="nameTitle">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h3 id="nameTitle">Create New Project</h3>
+          <p class="modal-lead">Give your project a name to get started.</p>
+        </div>
+        <button class="modal-close" type="button" data-close="nameModal" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="field">
+          <label for="projectName">Project Name</label>
+          <input id="projectName" type="text" autocomplete="off" />
+          <div class="field-hint">You can rename your project later.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" type="button" data-close="nameModal">Cancel</button>
+        <button class="btn btn-dark" type="button" id="btnCreateProject">Create Project</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo guide -->
+  <div class="overlay" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="modal lg">
+      <div class="modal-head">
+        <div>
+          <h3 id="guideTitle">Photo guide</h3>
+          <p class="modal-lead" id="guideLead">The model wears exactly what the photo shows. One garment, fully in frame, in even light.</p>
+        </div>
+        <button class="modal-close" type="button" data-close="guideModal" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="guideBody"></div>
+      <div class="modal-footer spread">
+        <button class="btn" type="button" data-close="guideModal">Close</button>
+        <button class="btn btn-dark" type="button" id="btnGotIt">Got it, select photos →</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" multiple hidden />
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const WORKFLOWS = {
+      flatlay: {
+        label: "Flat-Lay to Photoshoot",
+        defaultName: (d) => `Untitled Photoshoot ${d}`,
+        uploadTitle: "Upload products",
+        uploadDesc: "Add garment photos to generate your on-model photoshoot.",
+        zoneTitle: "Upload product images",
+        zoneDesc: "JPG, PNG or WebP. One garment per photo, fully in frame.",
+        guideLead: "The model wears exactly what the photo shows. One garment, fully in frame, in even light.",
+        guideOk: [
+          { cls: "g-flat", title: "Flat lay", text: "Lay it flat and open on a plain surface. Shoot straight down." },
+          { cls: "g-hanger", title: "On a hanger", text: "Straight on, whole garment in frame, sleeves hanging free." },
+          { cls: "g-mannequin", title: "On a mannequin", text: "Works too. Smooth the fabric so the shape reads." },
+        ],
+        guideBad: [
+          { cls: "g-folded", title: "Folded", text: "Folds hide sleeves, hems and prints. We can only copy what we see." },
+          { cls: "g-two", title: "Two garments", text: "One piece per photo, or the model can’t tell them apart." },
+          { cls: "g-busy", title: "Busy or dark", text: "Patterned tables and dim rooms bleed into the edges and the colors." },
+        ],
+        tips: [
+          { icon: "frame", title: "Whole garment", text: "Collar to hem, nothing cropped" },
+          { icon: "cam", title: "Straight on", text: "From above, or level with it" },
+          { icon: "sun", title: "Even light", text: "No hard shadows or glare" },
+          { icon: "bg", title: "Plain background", text: "One color, no clutter" },
+        ],
+      },
+      video: {
+        label: "Photoshoot to Video",
+        defaultName: (d) => `Untitled Video ${d}`,
+        uploadTitle: "Upload photoshoot",
+        uploadDesc: "Add on-model photos to turn into a product video.",
+        zoneTitle: "Upload photoshoot images",
+        zoneDesc: "JPG, PNG or WebP. Clear full-body or three-quarter shots work best.",
+        guideLead: "Use clean on-model photos from one look. Same outfit, consistent lighting, varied poses.",
+        guideOk: [
+          { cls: "g-mannequin", title: "Clear pose", text: "Full body or three-quarter. Face and outfit both readable." },
+          { cls: "g-hanger", title: "Same outfit", text: "Keep the look identical across frames so motion stays coherent." },
+          { cls: "g-flat", title: "Even studio light", text: "Soft, even light helps the video stay sharp and natural." },
+        ],
+        guideBad: [
+          { cls: "g-busy", title: "Heavy crop", text: "Tight face crops leave nothing for the body to move." },
+          { cls: "g-two", title: "Mixed looks", text: "Different outfits in one set confuse the motion." },
+          { cls: "g-folded", title: "Blurry frames", text: "Soft or motion-blurred stills turn into muddy video." },
+        ],
+        tips: [
+          { icon: "frame", title: "Whole figure", text: "Head to toe when possible" },
+          { icon: "cam", title: "Varied angles", text: "Front, side, walking" },
+          { icon: "sun", title: "Even light", text: "Match exposure across shots" },
+          { icon: "bg", title: "Clean backdrop", text: "Simple studio or solid set" },
+        ],
+      },
+    };
+
+    const TIP_ICONS = {
+      frame: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8V5h3M20 8V5h-3M4 16v3h3M20 16v3h-3"/></svg>',
+      cam: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l2-2h6l2 2h3v11H4V8z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+      sun: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+      bg: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>',
+    };
+
+    const state = { workflow: null, projectName: "", files: [] };
+
+    function todayStamp() {
+      const d = new Date();
+      return `${String(d.getDate()).padStart(2, "0")}.${String(d.getMonth() + 1).padStart(2, "0")}.${d.getFullYear()}`;
+    }
+
+    function toast(msg) {
+      const el = $("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => el.classList.remove("show"), 2200);
+    }
+
+    function openModal(id) { $(id).classList.add("show"); }
+    function closeModal(id) { $(id).classList.remove("show"); }
+
+    function startWorkflow(key) {
+      state.workflow = key;
+      const wf = WORKFLOWS[key];
+      $("projectName").value = wf.defaultName(todayStamp());
+      openModal("nameModal");
+      requestAnimationFrame(() => {
+        $("projectName").focus();
+        $("projectName").select();
+      });
+    }
+
+    function renderGuide(wf) {
+      const ok = wf.guideOk.map((item) => `
+        <div class="guide-card">
+          <div class="guide-thumb ${item.cls}"></div>
+          <div class="guide-card-body">
+            <h4><span class="mark ok">✓</span>${item.title}</h4>
+            <p>${item.text}</p>
+          </div>
+        </div>`).join("");
+      const bad = wf.guideBad.map((item) => `
+        <div class="guide-card">
+          <div class="guide-thumb ${item.cls}"></div>
+          <div class="guide-card-body">
+            <h4><span class="mark bad">✕</span>${item.title}</h4>
+            <p>${item.text}</p>
+          </div>
+        </div>`).join("");
+      const tips = wf.tips.map((t) => `
+        <div class="tip">
+          <div class="tip-icon">${TIP_ICONS[t.icon]}</div>
+          <strong>${t.title}</strong>
+          <span>${t.text}</span>
+        </div>`).join("");
+
+      $("guideLead").textContent = wf.guideLead;
+      $("guideBody").innerHTML = `
+        <div class="guide-section">
+          <div class="guide-label ok">What works best</div>
+          <div class="guide-grid">${ok}</div>
+        </div>
+        <div class="guide-section">
+          <div class="guide-label bad">What to avoid</div>
+          <div class="guide-grid">${bad}</div>
+        </div>
+        <div class="guide-tips">${tips}</div>
+      `;
+    }
+
+    function showUpload() {
+      const wf = WORKFLOWS[state.workflow];
+      $("viewWorkflow").hidden = true;
+      $("viewUpload").hidden = false;
+      $("crumbTail").textContent = state.projectName;
+      $("uploadWorkflowTag").textContent = wf.label;
+      $("uploadProjectLabel").textContent = state.projectName;
+      $("upTitle").textContent = wf.uploadTitle;
+      $("upDesc").textContent = wf.uploadDesc;
+      $("uploadZoneTitle").textContent = wf.zoneTitle;
+      $("uploadZoneDesc").textContent = wf.zoneDesc;
+      $("btnGenerate").disabled = state.files.length === 0;
+    }
+
+    function showWorkflow() {
+      $("viewUpload").hidden = true;
+      $("viewWorkflow").hidden = false;
+      $("crumbTail").textContent = "Creative Studio";
+      state.workflow = null;
+      state.projectName = "";
+      state.files = [];
+      $("uploadedGrid").hidden = true;
+      $("uploadedGrid").innerHTML = "";
+      $("btnGenerate").disabled = true;
+    }
+
+    // Card click → name modal (no Continue step)
+    document.querySelectorAll(".wf-card").forEach((card) => {
+      card.addEventListener("click", () => startWorkflow(card.dataset.workflow));
+    });
+
+    $("btnNewProject").addEventListener("click", () => {
+      showWorkflow();
+      toast("Choose a workflow");
+    });
+
+    $("btnCreateProject").addEventListener("click", () => {
+      const name = $("projectName").value.trim();
+      if (!name) {
+        $("projectName").focus();
+        toast("Enter a project name");
+        return;
+      }
+      // Land on the Products upload page; photo guide opens as overlay there
+      const params = new URLSearchParams({
+        workflow: state.workflow,
+        name,
+        guide: "1",
+      });
+      location.href = `index.html?${params}`;
+    });
+
+    $("projectName").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") $("btnCreateProject").click();
+    });
+
+    $("btnGotIt").addEventListener("click", () => {
+      closeModal("guideModal");
+      showUpload();
+    });
+
+    $("btnBackWorkflow").addEventListener("click", showWorkflow);
+
+    $("btnGenerate").addEventListener("click", () => {
+      toast(`Ready to generate · ${state.files.length} photo${state.files.length === 1 ? "" : "s"}`);
+    });
+
+    document.querySelectorAll("[data-close]").forEach((btn) => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.close));
+    });
+    document.querySelectorAll("[data-toast]").forEach((btn) => {
+      btn.addEventListener("click", () => toast(btn.dataset.toast));
+    });
+    document.querySelectorAll(".overlay").forEach((overlay) => {
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeModal(overlay.id);
+      });
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      ["guideModal", "nameModal"].forEach((id) => {
+        if ($(id).classList.contains("show")) closeModal(id);
+      });
+    });
+
+    function handleFiles(fileList) {
+      const files = [...fileList].filter((f) => /^image\//.test(f.type));
+      if (!files.length) {
+        toast("Please choose image files");
+        return;
+      }
+      state.files = [...state.files, ...files];
+      const grid = $("uploadedGrid");
+      grid.hidden = false;
+      files.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        const tile = document.createElement("div");
+        tile.className = "uploaded-tile";
+        tile.innerHTML = `<img src="${url}" alt="" /><div class="name"></div>`;
+        tile.querySelector(".name").textContent = file.name;
+        grid.appendChild(tile);
+      });
+      $("btnGenerate").disabled = false;
+      toast(`${files.length} image${files.length === 1 ? "" : "s"} added`);
+    }
+
+    $("browseFiles").addEventListener("click", (e) => {
+      e.stopPropagation();
+      $("fileInput").click();
+    });
+    $("uploadZone").addEventListener("click", () => $("fileInput").click());
+    $("uploadZone").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        $("fileInput").click();
+      }
+    });
+    $("fileInput").addEventListener("change", () => {
+      handleFiles($("fileInput").files);
+      $("fileInput").value = "";
+    });
+    ["dragenter", "dragover"].forEach((ev) => {
+      $("uploadZone").addEventListener(ev, (e) => {
+        e.preventDefault();
+        $("uploadZone").classList.add("drag");
+      });
+    });
+    ["dragleave", "drop"].forEach((ev) => {
+      $("uploadZone").addEventListener(ev, (e) => {
+        e.preventDefault();
+        $("uploadZone").classList.remove("drag");
+      });
+    });
+    $("uploadZone").addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
+  </script>
+</body>
+</html>
