@@ -723,8 +723,9 @@
       width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: var(--text);
       display: grid; place-items: center; font-weight: 700; font-size: 14px; flex-shrink: 0;
     }
+    .fb-text { flex-shrink: 0; }
     .fb-text strong { display: block; font-size: 13px; font-weight: 600; }
-    .fb-text span { display: block; font-size: 11px; color: rgba(255,255,255,.55); margin-top: 1px; }
+    .fb-text span { display: block; font-size: 11px; color: rgba(255,255,255,.55); margin-top: 1px; white-space: nowrap; line-height: 1.35; }
     .fb-sep { width: 1px; align-self: stretch; background: rgba(255,255,255,.12); margin: 2px 0; }
     .fb-label { font-size: 10.5px; letter-spacing: .1em; color: rgba(255,255,255,.5); font-weight: 600; white-space: nowrap; }
     .float-bar { left: calc(50% + var(--sidebar-w) / 2); max-width: calc(100vw - var(--sidebar-w) - 40px); }
@@ -1350,13 +1351,15 @@
       border-right-color: #c4a574; border-bottom-color: #c4a574;
     }
     .adj-roles-banner {
-      display: none; align-items: center; gap: 8px;
+      display: none; align-items: flex-start; gap: 8px;
       margin: 0 0 12px; padding: 10px 12px; border-radius: 10px;
       background: #fff4e8; border: 1px solid #f6d3ae;
       font-size: 12px; color: #7a4a16; line-height: 1.4;
     }
     .adj-roles-banner.show { display: flex; }
+    .adj-roles-copy { display: flex; flex-direction: column; gap: 2px; }
     .adj-roles-banner strong { color: #a85a14; font-weight: 600; }
+    .adj-roles-copy span { font-weight: 400; color: #7a4a16; }
     .adj-roles-info {
       position: relative; width: 16px; height: 16px; padding: 0; border-radius: 50%;
       border: 1px solid #e0b888; background: transparent; color: #a85a14;
@@ -1454,7 +1457,7 @@
     .adj-types { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
     .adj-types .adj-chip { height: 34px; }
     .adj-foot {
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; justify-content: flex-end; align-items: center;
       padding: 14px 20px; border-top: 1px solid var(--border); background: #fff;
     }
     .adj-photo-img .adj-photo-rm {
@@ -1754,7 +1757,77 @@
 
     /* Fluid width: content fills the area next to the sidebar, capped only on very wide screens */
     .main > * { max-width: 1440px; }
-    .upload-zone { min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .upload-zone { min-height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+
+    .tut-launch {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 12px 0 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(20,20,30,.04);
+    }
+    .tut-launch.in-bar { position: static; margin-left: auto; height: 36px; }
+    .tut-launch:hover { background: #f4f4f5; border-color: var(--border-strong); }
+    .tut-launch svg { color: var(--muted); flex-shrink: 0; }
+    .tut-pop {
+      position: fixed;
+      z-index: 80;
+      width: 248px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0,0,0,.16);
+      padding: 6px;
+    }
+    .tut-pop[hidden] { display: none; }
+    .tut-pop .menu-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--muted);
+      text-transform: uppercase; padding: 6px 10px 4px;
+    }
+    .tut-pop button {
+      display: flex; align-items: flex-start; gap: 10px; width: 100%;
+      text-align: left; padding: 8px 10px; border-radius: 8px;
+    }
+    .tut-pop button:hover { background: #f4f4f5; }
+    .tut-pop .tut-ico {
+      width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+      display: grid; place-items: center; background: #f4f4f5; color: var(--text); margin-top: 1px;
+    }
+    .tut-opt-title { display: block; font-size: 13px; font-weight: 600; }
+    .tut-opt-sub { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+
+    .vid-stage {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      background: #16161a;
+      color: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .vid-scene { padding: 28px 28px 24px; max-width: 520px; }
+    .vid-kicker { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #d4f56a; margin-bottom: 8px; }
+    .vid-scene h4 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .vid-scene p { font-size: 14px; color: #c8c8d0; line-height: 1.45; }
+    .vid-controls {
+      display: flex; align-items: center; gap: 12px; margin-top: 12px;
+    }
+    .vid-controls .btn { height: 34px; }
+    .vid-step { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .vid-bar { flex: 1; height: 4px; background: #ececef; border-radius: 99px; overflow: hidden; }
+    .vid-bar > span { display: block; height: 100%; width: 0; background: var(--text); transition: width .35s ease; }
 
     /* Collapsible sidebar */
     .sidebar { width: var(--sidebar-w); transition: width .2s ease; overflow: hidden; }
@@ -1843,6 +1916,10 @@
           <button class="btn" id="btnSmartSort" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z"/></svg>Smart Sorting</button>
           <button class="btn btn-accent" id="btnAddItems" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>Add Items</button>
           <button class="btn btn-ghost" id="btnCancelSelect" type="button" hidden>Cancel</button>
+          <button class="tut-launch in-bar" type="button" data-tutorial aria-haspopup="menu" aria-expanded="false" aria-label="Tutorial">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 114 2c-.8.5-1.5 1.1-1.5 2.2"/><path d="M12 17h.01" stroke-linecap="round"/></svg>
+            Tutorial
+          </button>
         </div>
       </div>
 
@@ -2128,7 +2205,7 @@
       <div class="adj-head">
         <div class="adj-head-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="8" width="20" height="8" rx="1.5"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg></div>
         <div>
-          <h3 id="adjTitle">Product Measurements</h3>
+          <h3 id="adjTitle">Product Card</h3>
           <div class="sub" id="adjProductId"></div>
         </div>
         <button class="modal-close" type="button" data-close="adjustModal" aria-label="Close">✕</button>
@@ -2139,13 +2216,12 @@
             <h4>Product photos</h4>
             <span class="adj-slot-pill" id="adjSlotPill">0 / 4</span>
           </div>
-          <p class="hint" id="adjPhotoHint">Main is required. Back and Secondary are optional.</p>
+          <p class="hint" id="adjPhotoHint">Add up to 4 photos. Assign roles to 4: 1 Main (required), 2 Secondary, 1 Back view.</p>
           <div class="adj-roles-banner" id="adjRolesBanner" role="status">
-            <strong>Assign photo roles</strong>
-            <button type="button" class="adj-roles-info" aria-label="Choose a Main photo. Back and Secondary are optional.">
-              i
-              <span class="adj-roles-tip" role="tooltip">Choose a Main photo. Back and Secondary are optional.</span>
-            </button>
+            <div class="adj-roles-copy">
+              <strong>Assign a role to each photo</strong>
+              <span id="adjRolesDetail">Add up to 4 photos. Assign roles to 4: 1 Main (required), 2 Secondary, 1 Back view.</span>
+            </div>
           </div>
           <div class="adj-role-tools" id="adjRoleTools" hidden>
             <button type="button" class="adj-quick" id="adjClearRoles">Clear roles</button>
@@ -2193,7 +2269,6 @@
         </div>
       </div>
       <div class="adj-foot">
-        <button class="btn" type="button" data-close="adjustModal">Cancel</button>
         <button class="btn btn-accent" type="button" id="adjSave">Save Product</button>
       </div>
     </div>
@@ -2231,6 +2306,44 @@
       <div class="modal-footer spread">
         <button class="btn" type="button" data-close="guideModal">Close</button>
         <button class="btn btn-dark" type="button" id="btnGotIt">Got it, select photos →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tut-pop" id="tutPop" hidden role="menu" aria-label="Tutorial">
+    <div class="menu-label">Upload help</div>
+    <button type="button" id="tutVideo" role="menuitem">
+      <span class="tut-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg></span>
+      <span><span class="tut-opt-title">Video tutorial</span><span class="tut-opt-sub">A short walkthrough of upload</span></span>
+    </button>
+    <button type="button" id="tutRead" role="menuitem">
+      <span class="tut-ico" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4.5h10.5A2.5 2.5 0 0118 7v13H7.5A2.5 2.5 0 015 17.5v-13z"/><path d="M5 17.5A2.5 2.5 0 017.5 15H18"/></svg></span>
+      <span><span class="tut-opt-title">Read the guide</span><span class="tut-opt-sub">What works, and what to avoid</span></span>
+    </button>
+  </div>
+
+  <div class="overlay" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoTitle">
+    <div class="modal" style="width:min(680px,100%)">
+      <div class="modal-head">
+        <div>
+          <h3 id="videoTitle">Video tutorial</h3>
+          <p class="modal-sub">How to upload products</p>
+        </div>
+        <button class="modal-close" type="button" data-close="videoModal" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="vid-stage" id="vidStage">
+          <div class="vid-scene">
+            <div class="vid-kicker" id="vidKicker">1 / 4</div>
+            <h4 id="vidSceneTitle">Add your photos</h4>
+            <p id="vidSceneText">Drop images on the upload area, or browse for JPG, PNG, and WebP files.</p>
+          </div>
+        </div>
+        <div class="vid-controls">
+          <button class="btn btn-dark" type="button" id="vidToggle">Play</button>
+          <div class="vid-bar" aria-hidden="true"><span id="vidBar"></span></div>
+          <span class="vid-step" id="vidStep">1 / 4</span>
+        </div>
       </div>
     </div>
   </div>
@@ -2455,6 +2568,12 @@
       });
       zone.addEventListener("click", (e) => {
         if (e.target.closest("button")) return;
+        const pop = $("tutPop");
+        if (pop && !pop.hidden) {
+          pop.hidden = true;
+          document.querySelectorAll("[data-tutorial]").forEach((b) => b.setAttribute("aria-expanded", "false"));
+          return;
+        }
         openFilePicker();
       });
     }
@@ -2508,7 +2627,7 @@
       if (list.some((p) => p.category === "unassigned")) return "Assign a category first — Unassigned can’t be grouped";
       if (new Set(list.map((p) => p.category)).size > 1) return "Group items from one category only";
       const total = list.reduce((s, p) => s + p.photos, 0);
-      if (total > MAX_GROUP) return `A product holds up to ${MAX_GROUP} photos (${total} selected)`;
+      if (total > MAX_GROUP) return `These photos add up to ${total}. A product can have ${MAX_GROUP}.`;
       return "";
     }
 
@@ -2721,17 +2840,17 @@
         : "";
       const allSelected = items.length > 0 && items.every((p) => state.selected.has(p.id));
       const groupSelectBlocked = false;
-      const selectModeBtns = items.length && state.selectMode
-        ? `<button class="btn btn-select-cancel" type="button" data-cancel-select>
-             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5 9-10"/></svg>Cancel
-           </button>
-           ${groupSelectBlocked
-             ? ""
-             : `<button class="btn btn-select-all ${allSelected ? "is-on" : ""}" type="button" data-select-all="${key}" aria-pressed="${allSelected}">
+      const selectAllBtn = groupSelectBlocked
+        ? ""
+        : `<button class="btn btn-select-all ${allSelected ? "is-on" : ""}" type="button" data-select-all="${key}" aria-pressed="${allSelected}">
              ${allSelected
                ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5 9-10"/></svg>Deselect all`
                : `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/></svg>Select all`}
-           </button>`}`
+           </button>`;
+      const selectModeBtns = items.length && state.selectMode
+        ? `${selectAllBtn}<button class="btn btn-select-cancel" type="button" data-cancel-select>
+             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5 9-10"/></svg>Cancel
+           </button>`
         : "";
 
       let body;
@@ -2965,12 +3084,22 @@
       cat.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("dragover", (e) => {
           if (!dragId || dragId === card.dataset.id) return;
+          const all = allProducts();
+          const target = all.find((x) => x.id === card.dataset.id);
+          const dragged = all.find((x) => x.id === dragId);
+          // Another category: this drop only moves the product. Don't offer grouping.
+          if (!target || !dragged || target.category !== dragged.category) {
+            card.classList.remove("group-target", "group-no");
+            const img = card.querySelector(".card-img");
+            if (img) delete img.dataset.dropLabel;
+            e.preventDefault();
+            return;
+          }
           e.preventDefault();
           e.stopPropagation();
           const sec = card.closest("[data-drop]");
           if (sec) sec.classList.remove("drop-over");
-          const all = allProducts();
-          const reason = groupReason([all.find((x) => x.id === card.dataset.id), all.find((x) => x.id === dragId)]);
+          const reason = groupReason([target, dragged]);
           card.classList.add("group-target");
           card.classList.toggle("group-no", !!reason);
           card.querySelector(".card-img").dataset.dropLabel = reason || "Drop to group";
@@ -2980,6 +3109,19 @@
         });
         card.addEventListener("drop", (e) => {
           if (!dragId || dragId === card.dataset.id) return;
+          const all = allProducts();
+          const target = all.find((x) => x.id === card.dataset.id);
+          const dragged = all.find((x) => x.id === dragId);
+          if (!target || !dragged) return;
+          if (target.category !== dragged.category) {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = dragId;
+            const cat = target.category;
+            dragId = null;
+            setCategory(id, cat);
+            return;
+          }
           e.preventDefault();
           e.stopPropagation();
           const id = dragId;
@@ -2999,7 +3141,14 @@
         });
       });
     }
-    document.addEventListener("click", (e) => { if (!e.target.closest("#catMenu")) closeCatMenu(); });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest("#catMenu")) closeCatMenu();
+      if (!e.target.closest("#tutPop") && !e.target.closest("[data-tutorial]")) {
+        const pop = $("tutPop");
+        if (pop) pop.hidden = true;
+        document.querySelectorAll("[data-tutorial]").forEach((b) => b.setAttribute("aria-expanded", "false"));
+      }
+    });
 
     function updateFloat() {
       const bar = $("floatBar");
@@ -3018,9 +3167,10 @@
       const wrap = $("groupWrap");
       if (reason && n >= 2) wrap.dataset.tip = reason; else if (reason) wrap.dataset.tip = "Select 2 or more items to group"; else delete wrap.dataset.tip;
       const photos = photoCountSelected();
-      // Show why Group is unavailable only when the user is plausibly trying to group (2+ selected)
-      const hint = "";
-      $("floatMsg").innerHTML = `<span class="fb-count">${n}</span><span class="fb-text"><strong>${n} item${n > 1 ? "s" : ""} selected</strong><span>${n >= 2 && !reason ? `Group into 1 product · ${photos} photos` : "Move to a category or group"}</span></span>${hint}`;
+      const sub = n >= 2
+        ? (reason || `Group into 1 product · ${photos} photos`)
+        : "Move to a category or group";
+      $("floatMsg").innerHTML = `<span class="fb-count">${n}</span><span class="fb-text"><strong>${n} item${n > 1 ? "s" : ""} selected</strong><span>${sub}</span></span>`;
       $("fbAssign").hidden = false;
     }
 
@@ -3330,14 +3480,18 @@
       const rolesNeeded = multi && !hasMain;
       const pill = $("adjSlotPill");
       if (pill) pill.textContent = `${adjSlotUsed()} / ${ADJ_MAX_SLOTS}`;
+      const guide = adjHasRef()
+        ? "Reference is set — assign roles to at most 3 photos (Main required). Extra photos stay as No role."
+        : "Add up to 4 photos. Assign roles to 4: 1 Main (required), 2 Secondary, 1 Back view.";
       const hint = $("adjPhotoHint");
       if (hint) {
         // A single photo is saved as Main automatically, so the roles copy is noise.
-        hint.hidden = !multi;
-        hint.textContent = adjHasRef()
-          ? "Reference is set — assign roles to at most 3 photos (Main required). Extra photos stay as No role."
-          : "Main is required. Back and Secondary are optional.";
+        // When roles are still missing, the banner below carries the same guide.
+        hint.hidden = !multi || rolesNeeded;
+        hint.textContent = guide;
       }
+      const detail = $("adjRolesDetail");
+      if (detail) detail.textContent = guide;
       const banner = $("adjRolesBanner");
       if (banner) banner.classList.toggle("show", rolesNeeded);
 
@@ -3981,6 +4135,12 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
+        const pop = $("tutPop");
+        if (pop && !pop.hidden) {
+          pop.hidden = true;
+          document.querySelectorAll("[data-tutorial]").forEach((b) => b.setAttribute("aria-expanded", "false"));
+          return;
+        }
         if ($("catPop").classList.contains("show")) { closeCatPop(); return; }
         document.querySelectorAll(".overlay.show").forEach((ov) => ov.classList.remove("show"));
         if (state.selectMode) exitSelect();
@@ -4107,6 +4267,87 @@
       $("btnBackProjects").addEventListener("click", () => {
         location.href = "creative-studio.html";
       });
+
+      const VID_SCENES = [
+        { title: "Add your photos", text: "Drop images on the upload area, or browse for JPG, PNG, and WebP files." },
+        { title: "One garment per photo", text: "Keep the whole piece in frame, on a plain background, in even light." },
+        { title: "Drop into a category to move it", text: "Dragging a product into another category only changes its category." },
+        { title: "Group photos of the same product", text: "Select the photos and press Group. A product can have up to 4." },
+      ];
+      let vidIndex = 0;
+      let vidTimer = null;
+
+      function renderVid() {
+        const scene = VID_SCENES[vidIndex];
+        $("vidKicker").textContent = `Step ${vidIndex + 1}`;
+        $("vidSceneTitle").textContent = scene.title;
+        $("vidSceneText").textContent = scene.text;
+        $("vidStep").textContent = `${vidIndex + 1} / ${VID_SCENES.length}`;
+        $("vidBar").style.width = `${((vidIndex + 1) / VID_SCENES.length) * 100}%`;
+      }
+
+      function setVidPlaying(on) {
+        clearInterval(vidTimer);
+        vidTimer = null;
+        $("vidToggle").textContent = on ? "Pause" : "Play";
+        $("vidToggle").setAttribute("aria-label", on ? "Pause" : "Play");
+        if (!on) return;
+        vidTimer = setInterval(() => {
+          if (!$("videoModal").classList.contains("show")) { setVidPlaying(false); return; }
+          vidIndex = (vidIndex + 1) % VID_SCENES.length;
+          renderVid();
+        }, 3200);
+      }
+
+      function closeTutPop() {
+        $("tutPop").hidden = true;
+        document.querySelectorAll("[data-tutorial]").forEach((b) => b.setAttribute("aria-expanded", "false"));
+      }
+
+      function openTutPop(btn) {
+        const pop = $("tutPop");
+        const open = !pop.hidden && pop.dataset.for === (btn.dataset.tutorialId || btn.getAttribute("aria-label"));
+        document.querySelectorAll("[data-tutorial]").forEach((b) => b.setAttribute("aria-expanded", "false"));
+        if (open) { pop.hidden = true; return; }
+        pop.hidden = false;
+        pop.dataset.for = btn.dataset.tutorialId || "tutorial";
+        btn.setAttribute("aria-expanded", "true");
+        const r = btn.getBoundingClientRect();
+        const width = pop.offsetWidth || 248;
+        const height = pop.offsetHeight || 120;
+        const left = Math.max(8, Math.min(r.right - width, window.innerWidth - width - 8));
+        const top = r.bottom + 8 + height > window.innerHeight ? Math.max(8, r.top - height - 8) : r.bottom + 8;
+        pop.style.left = left + "px";
+        pop.style.top = top + "px";
+      }
+
+      document.querySelectorAll("[data-tutorial]").forEach((btn, i) => {
+        btn.dataset.tutorialId = "tut-" + i;
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openTutPop(btn);
+        });
+      });
+      $("tutVideo").addEventListener("click", () => {
+        closeTutPop();
+        vidIndex = 0;
+        renderVid();
+        setVidPlaying(false);
+        openModal("videoModal");
+      });
+      $("tutRead").addEventListener("click", () => {
+        closeTutPop();
+        renderGuide(workflow);
+        openModal("guideModal");
+      });
+      $("vidToggle").addEventListener("click", () => {
+        const playing = $("vidToggle").textContent === "Pause";
+        setVidPlaying(!playing);
+      });
+      $("videoModal").addEventListener("click", (e) => {
+        if (e.target === $("videoModal")) setVidPlaying(false);
+      });
+      $("videoModal").querySelector("[data-close='videoModal']").addEventListener("click", () => setVidPlaying(false));
 
       if (showGuide) {
         renderGuide(workflow);
